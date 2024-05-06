@@ -1,0 +1,5 @@
+name=Pong
+author=Jahz
+description=a pong game to learn the playdate sdk
+bundleID=com.jahz.pongc
+imagePath=
