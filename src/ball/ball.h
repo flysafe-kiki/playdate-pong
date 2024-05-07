@@ -6,6 +6,12 @@
 
 #include "pd_api.h"
 
-LCDSprite* createBall(void);
+typedef struct game_ball
+{
+    LCDSprite* (*createBall)(void);
+} game_ball;
+
+game_ball* createGameBallStruct(void);
+void destroyGameBallStruct(game_ball* ball);
 
 #endif /* ball_h */

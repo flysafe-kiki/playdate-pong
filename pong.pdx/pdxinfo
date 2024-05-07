@@ -4,4 +4,4 @@ description=a pong game to learn the playdate sdk
 bundleID=com.jahz.pongc
 imagePath=
 pdxversion=20400
-buildtime=768338787
+buildtime=768380676

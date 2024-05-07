@@ -5,6 +5,7 @@ extern uint8_t SPRITE_KIND_WALL;
 int dx = 5;
 int dy = 5;
 
+
 static void drawBall(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
 	pd->graphics->fillRect(bounds.x, bounds.y, BALL_WIDTH, BALL_HEIGHT, kColorBlack);
 };
@@ -12,6 +13,7 @@ static void drawBall(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
 static void updateBall(LCDSprite* ball) {
 	// Crank direction actually enables the ball to move either forward or backward
 	// depending on the rotation of the crank
+	// TODO move that logic somewhere else
 	int crank_direction = 0;
 	if (pd->system->getCrankChange() > 0) {
 		crank_direction = 1;
@@ -49,6 +51,7 @@ static SpriteCollisionResponseType ballPlaneCollisionResponse(LCDSprite* ball, L
 {
 	return kCollisionTypeFreeze;
 }
+
 LCDSprite* createBall(void) {
 	LCDSprite *ball = pd->sprite->newSprite();
 	PDRect bounds = PDRectMake(0, 0, BALL_WIDTH, BALL_HEIGHT);
@@ -65,4 +68,25 @@ LCDSprite* createBall(void) {
 	pd->sprite->addSprite(ball);
 
 	return ball;
+}
+void collideLeft(LCDSprite* ball) {
+	dx = abs(dx);
+}
+void collideRight(LCDSprite* ball) {
+	dx = -1 * abs(dx);
+}
+void collideTop(LCDSprite* ball) {
+	dy = abs(dy);
+}
+void collideBottom(LCDSprite* ball) {
+	dy = -1 * abs(dy);
+}
+
+game_ball* createGameBallStruct(void) {
+    game_ball* gb = malloc(sizeof(game_ball));
+	gb->createBall = createBall;
+	return gb;
+}
+void destroyGameBallStruct(game_ball* gb) {
+	free(gb);
 }
