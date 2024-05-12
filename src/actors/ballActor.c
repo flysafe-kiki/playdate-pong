@@ -1,4 +1,4 @@
-#include "ball.h"
+#include "ballActor.h"
 
 extern PlaydateAPI* pd;
 extern uint8_t SPRITE_KIND_WALL;
@@ -6,11 +6,11 @@ int dx = 5;
 int dy = 5;
 
 
-static void drawBall(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
+static void draw(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
 	pd->graphics->fillRect(bounds.x, bounds.y, BALL_WIDTH, BALL_HEIGHT, kColorBlack);
 };
 
-static void updateBall(LCDSprite* ball) {
+static void update(LCDSprite* ball) {
 	// Crank direction actually enables the ball to move either forward or backward
 	// depending on the rotation of the crank
 	// TODO move that logic somewhere else
@@ -47,23 +47,23 @@ static void updateBall(LCDSprite* ball) {
 	// todo: review if this is the correct way provided that collisionInfos is an array
 	free(collisionInfos);
 }
-static SpriteCollisionResponseType ballPlaneCollisionResponse(LCDSprite* ball, LCDSprite* other)
+static SpriteCollisionResponseType planeCollisionResponse(LCDSprite* ball, LCDSprite* other)
 {
 	return kCollisionTypeFreeze;
 }
 
-LCDSprite* createBall(void) {
+LCDSprite* ballActor_create(void) {
 	LCDSprite *ball = pd->sprite->newSprite();
 	PDRect bounds = PDRectMake(0, 0, BALL_WIDTH, BALL_HEIGHT);
 	pd->sprite->setBounds(ball, bounds);
-	pd->sprite->setUpdateFunction(ball, updateBall);
-	pd->sprite->setDrawFunction(ball, drawBall);
+	pd->sprite->setUpdateFunction(ball, update);
+	pd->sprite->setDrawFunction(ball, draw);
 	pd->sprite->setCenter(ball, 0, 0);
 	pd->sprite->moveTo(ball, 0, 0);
 	
 	PDRect cr = PDRectMake(0, 0, BALL_WIDTH, BALL_HEIGHT);
 	pd->sprite->setCollideRect(ball, cr);
-	pd->sprite->setCollisionResponseFunction(ball, ballPlaneCollisionResponse);
+	pd->sprite->setCollisionResponseFunction(ball, planeCollisionResponse);
 
 	pd->sprite->addSprite(ball);
 
@@ -80,13 +80,4 @@ void collideTop(LCDSprite* ball) {
 }
 void collideBottom(LCDSprite* ball) {
 	dy = -1 * abs(dy);
-}
-
-game_ball* createGameBallStruct(void) {
-    game_ball* gb = malloc(sizeof(game_ball));
-	gb->createBall = createBall;
-	return gb;
-}
-void destroyGameBallStruct(game_ball* gb) {
-	free(gb);
 }

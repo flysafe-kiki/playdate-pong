@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #include "pd_api.h"
-#include "ball/ball.h"
+#include "actors/ballActor.h"
 #include "ui/fonts.h"
 #include "ui/score.h"
 
@@ -23,11 +23,6 @@ static int update(void* userdata);
 #ifdef _WINDLL
 __declspec(dllexport)
 #endif
-
-typedef struct Game {
-	struct game_ball* ball;
-} Game;
-Game* game = NULL;
 
 
 void createBoundary(float x, float y, float width, float height) {
@@ -56,22 +51,12 @@ void createNet(void) {
 	pd->graphics->fillRect(pd->display->getWidth()/2 - 1, 20, 2, pd->display->getHeight() - 40, kColorBlack);
 }
 
- 
-void initGameStruct(void) {
-	game =  malloc(sizeof(Game));
-	game->ball = createGameBallStruct();
-}
-void destroyGameStruct(void) {
-	destroyGameBallStruct(game->ball);
-	free(game);
-}
 int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 {
 	(void)arg; // arg is currently only used for event = kEventKeyPressed
 
 	if ( event == kEventInit )
 	{
-		initGameStruct();
 		pd = playdate;
 		const char* err;
 		const char* fontPath = FONT_PATH;
@@ -82,15 +67,11 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 
 
 		// Add various sprites to the scene
-		game->ball->createBall();
+		ballActor_create();
 		createGameBoundaries();
 
 		// Note: If you set an update callback in the kEventInit handler, the system assumes the game is pure C and doesn't run any Lua code in the game
 		pd->system->setUpdateCallback(update, pd);
-	}
-
-	if (event == kEventTerminate) {
-		destroyGameStruct();
 	}
 	
 	return 0;

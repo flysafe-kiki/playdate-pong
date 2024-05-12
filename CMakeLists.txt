@@ -31,9 +31,9 @@ set(PLAYDATE_GAME_DEVICE pong_DEVICE)
 project(${PLAYDATE_GAME_NAME} C ASM)
 
 if (TOOLCHAIN STREQUAL "armgcc")
-	add_executable(${PLAYDATE_GAME_DEVICE} src/main.c src src/ball/ball.c src/ui/score.c)
+	add_executable(${PLAYDATE_GAME_DEVICE} src/main.c src src/actors/ballActor.c src/ui/score.c)
 else()
-	add_library(${PLAYDATE_GAME_NAME} SHARED src/main.c src/ball/ball.c src/ui/score.c)
+	add_library(${PLAYDATE_GAME_NAME} SHARED src/main.c src/actors/ballActor.c src/ui/score.c)
 endif()
 
 include(${SDK}/C_API/buildsupport/playdate_game.cmake)
