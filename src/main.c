@@ -16,7 +16,10 @@
 
 PlaydateAPI* pd = NULL;
 LCDFont* font = NULL;
-uint8_t SPRITE_KIND_WALL = 0;
+
+#include "sprites.h"
+const uint8_t SPRITE_KIND_WALL = 0;
+const uint8_t SPRITE_KIND_BALL = 1;
 
 
 static int update(void* userdata);

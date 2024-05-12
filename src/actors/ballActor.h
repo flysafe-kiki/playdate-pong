@@ -1,11 +1,12 @@
 #define BALL_WIDTH 10
 #define BALL_HEIGHT 10
 
-#ifndef ball_h
-#define ball_h
+#ifndef ballActor_h
+#define ballActor_h
 
 #include "pd_api.h"
 
 LCDSprite* ballActor_create(void);
-
-#endif /* ball_h */
+void ballActor_collideX(LCDSprite* ball);
+void ballActor_collideY(LCDSprite* ball);
+#endif /* ballActor_h */
