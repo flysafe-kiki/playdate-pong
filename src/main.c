@@ -10,9 +10,10 @@
 #include <stdlib.h>
 
 #include "pd_api.h"
+#include "systems/scoring.h"
 #include "actors/ballActor.h"
 #include "ui/fonts.h"
-#include "ui/score.h"
+#include "ui/ui.h"
 
 PlaydateAPI* pd = NULL;
 LCDFont* font = NULL;
@@ -21,11 +22,24 @@ LCDFont* font = NULL;
 const uint8_t SPRITE_KIND_WALL = 0;
 const uint8_t SPRITE_KIND_BALL = 1;
 
-
-static int update(void* userdata);
 #ifdef _WINDLL
 __declspec(dllexport)
 #endif
+
+
+static int update(void* userdata) {
+	pd->graphics->clear(kColorWhite);
+	pd->graphics->setFont(font);
+	
+
+	pd->sprite->updateAndDrawSprites();
+	updateScores(p1Score, p2Score);
+	
+	// pd->system->drawFPS(0,0);
+	
+	createNet();
+	return 1;
+}
 
 
 void createBoundary(float x, float y, float width, float height) {
@@ -50,9 +64,6 @@ void createGameBoundaries(void) {
 	createBoundary(0, pd->display->getHeight(), pd->display->getWidth(), 1); // bottom wall
 }
 
-void createNet(void) {
-	pd->graphics->fillRect(pd->display->getWidth()/2 - 1, 20, 2, pd->display->getHeight() - 40, kColorBlack);
-}
 
 int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 {
@@ -70,6 +81,7 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 
 
 		// Add various sprites to the scene
+		setScore(0,0);
 		ballActor_create();
 		createGameBoundaries();
 
@@ -79,18 +91,3 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 	
 	return 0;
 }
-
-static int update(void* userdata) {
-	pd->graphics->clear(kColorWhite);
-	pd->graphics->setFont(font);
-	
-
-	pd->sprite->updateAndDrawSprites();
-	createScores();
-	
-	// pd->system->drawFPS(0,0);
-	
-	createNet();
-	return 1;
-}
-

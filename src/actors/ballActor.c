@@ -12,24 +12,14 @@ static void draw(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
 };
 
 static void update(LCDSprite* ball) {
-	// Crank direction actually enables the ball to move either forward or backward
-	// depending on the rotation of the crank
-	// TODO move that logic somewhere else
-	int crankDirection = 0;
-	if (pd->system->getCrankChange() > 0) {
-		crankDirection = 1;
-	} else if (pd->system->getCrankChange() < 0) {
-		crankDirection = -1;
-	}
-
 	// Move the ball, taking collisions into account
 	float actualX = 0;
 	float actualY = 0;
 	pd->sprite->getPosition(ball, &actualX, &actualY);
 
 	int collisionsLength = 0;
-	// TODO: figure out why ball no longer bounces with our collide logic
-	SpriteCollisionInfo* collisionInfos = pd->sprite->moveWithCollisions(ball, actualX + (dx * crankDirection), actualY + (dy * crankDirection), &actualX, &actualY, &collisionsLength); 
+
+	SpriteCollisionInfo* collisionInfos = pd->sprite->moveWithCollisions(ball, actualX + dx, actualY + dy, &actualX, &actualY, &collisionsLength);
 	collisionMgr_handleCollision(ball, collisionInfos, &collisionsLength);
 	free(collisionInfos);
 }
@@ -39,7 +29,7 @@ static SpriteCollisionResponseType planeCollisionResponse(LCDSprite* ball, LCDSp
 	return kCollisionTypeFreeze;
 }
 
-LCDSprite* ballActor_create(void) {
+LCDSprite* ballActor_create() {
 	LCDSprite *ball = pd->sprite->newSprite();
 	PDRect bounds = PDRectMake(0, 0, BALL_WIDTH, BALL_HEIGHT);
 	pd->sprite->setBounds(ball, bounds);
@@ -58,8 +48,11 @@ LCDSprite* ballActor_create(void) {
 	return ball;
 }
 void ballActor_collideX(LCDSprite* ball) {
-	dx = -1 * abs(dx);
+	dx = -1 * dx;
 }
 void ballActor_collideY(LCDSprite* ball) {
-	dy = -1 * abs(dy);
+	dy = -1 * dy;
+}
+void ballActor_reset(LCDSprite* ball) {
+	pd->sprite->moveTo(ball, 0, 0);
 }
