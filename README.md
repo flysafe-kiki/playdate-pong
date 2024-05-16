@@ -1,4 +1,5 @@
 # TODO
+- [ ] Build the AI and make it interesting
 - [x] Figure out how to make it simpler to rebuild and restart the simulator
 - [ ] Figure out the building system (dependencies, root makefile vs CMAKELists, makefile in build folder, etc...)
 - [ ] Enable C Warnings

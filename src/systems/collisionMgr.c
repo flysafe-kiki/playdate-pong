@@ -16,10 +16,10 @@ static void handleBallActorCollision(LCDSprite* ball, SpriteCollisionInfo* colli
 		if (pd->sprite->getTag(info->other) == SPRITE_KIND_WALL) {
 			if (info->normal.x == -1) {
 				setScore(p1Score + 1, p2Score);
-				ballActor_reset(ball);
+				ballActor_reset(ball, false);
 			} else if (info->normal.x == 1) {
 				setScore(p1Score, p2Score + 1);
-				ballActor_reset(ball);
+				ballActor_reset(ball, true);
 			}  else if (info->normal.y != 0) {
 				ballActor_collideY(ball);
 			}

@@ -12,6 +12,7 @@
 #include "pd_api.h"
 #include "systems/scoring.h"
 #include "actors/ballActor.h"
+#include "actors/racketActor.h"
 #include "ui/fonts.h"
 #include "ui/ui.h"
 
@@ -21,6 +22,7 @@ LCDFont* font = NULL;
 #include "sprites.h"
 const uint8_t SPRITE_KIND_WALL = 0;
 const uint8_t SPRITE_KIND_BALL = 1;
+const uint8_t SPRITE_KIND_RACKET = 2;
 
 #ifdef _WINDLL
 __declspec(dllexport)
@@ -83,6 +85,9 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 		// Add various sprites to the scene
 		setScore(0,0);
 		ballActor_create();
+		int racketOffset = 50;
+		racketActor_create(true, racketOffset);
+		racketActor_create(false, pd->display->getWidth() - racketOffset - RACKET_WIDTH);
 		createGameBoundaries();
 
 		// Note: If you set an update callback in the kEventInit handler, the system assumes the game is pure C and doesn't run any Lua code in the game

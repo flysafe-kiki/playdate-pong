@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "../systems/collisionMgr.h"
 #include "../sprites.h"
 #include "ballActor.h"
@@ -53,6 +54,14 @@ void ballActor_collideX(LCDSprite* ball) {
 void ballActor_collideY(LCDSprite* ball) {
 	dy = -1 * dy;
 }
-void ballActor_reset(LCDSprite* ball) {
-	pd->sprite->moveTo(ball, 0, 0);
+void ballActor_reset(LCDSprite* ball, bool resetToTheRight) {
+	int resetDirection = resetToTheRight ? -1 : 1;
+	dx = 5 * resetDirection;
+	dy = 5 * resetDirection;
+
+	int posX = BALL_SPAWN_X_OFFSET;
+	if (resetToTheRight) {
+		posX = pd->display->getWidth() - BALL_SPAWN_X_OFFSET - BALL_WIDTH;
+	}
+	pd->sprite->moveTo(ball, posX, pd->display->getHeight() / 2 - BALL_HEIGHT);
 }
