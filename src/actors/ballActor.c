@@ -4,6 +4,7 @@
 #include "ballActor.h"
 
 extern PlaydateAPI* pd;
+int MAX_PIXEL_MOVEMENT = 10;
 int dx = 5;
 int dy = 5;
 
@@ -53,6 +54,15 @@ void ballActor_collideX(LCDSprite* ball) {
 }
 void ballActor_collideY(LCDSprite* ball) {
 	dy = -1 * dy;
+}
+void ballActor_setDeltaY(LCDSprite* ball, int newDeltaY) {
+	if (newDeltaY > MAX_PIXEL_MOVEMENT) {
+		dy = MAX_PIXEL_MOVEMENT;
+	} else if (newDeltaY < -1 * MAX_PIXEL_MOVEMENT) {
+		dy = -1 * MAX_PIXEL_MOVEMENT;
+	} else {
+		dy = newDeltaY;
+	}
 }
 void ballActor_reset(LCDSprite* ball, bool resetToTheRight) {
 	int resetDirection = resetToTheRight ? -1 : 1;

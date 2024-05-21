@@ -12,4 +12,5 @@ LCDSprite* ballActor_create(void);
 void ballActor_reset(LCDSprite*, bool);
 void ballActor_collideX(LCDSprite*);
 void ballActor_collideY(LCDSprite*);
+void ballActor_setDeltaY(LCDSprite*, int);
 #endif /* ballActor_h */

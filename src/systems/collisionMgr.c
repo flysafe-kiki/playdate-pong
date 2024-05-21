@@ -3,6 +3,7 @@
 extern PlaydateAPI* pd;
 #include "../sprites.h"
 #include "../actors/ballActor.h"
+#include "../actors/racketActor.h"
 #include "collisionMgr.h"
 #include "scoring.h"
 
@@ -13,7 +14,8 @@ static void handleBallActorCollision(LCDSprite* ball, SpriteCollisionInfo* colli
 	// on collision normals 
 	for (int i = 0; i < *collisionsLength; i++) {
 		SpriteCollisionInfo *info = &collisionInfos[i];
-		if (pd->sprite->getTag(info->other) == SPRITE_KIND_WALL) {
+		uint8_t collidedSprite = pd->sprite->getTag(info->other);
+		if (collidedSprite == SPRITE_KIND_WALL) {
 			if (info->normal.x == -1) {
 				setScore(p1Score + 1, p2Score);
 				ballActor_reset(ball, false);
@@ -23,13 +25,14 @@ static void handleBallActorCollision(LCDSprite* ball, SpriteCollisionInfo* colli
 			}  else if (info->normal.y != 0) {
 				ballActor_collideY(ball);
 			}
-		} else {
-			if (info->normal.x != 0) {
-				ballActor_collideX(ball);
-			}
-			if (info->normal.y != 0) {
-				ballActor_collideY(ball);
-			}
+		} else if (collidedSprite == SPRITE_KIND_RACKET) {
+			float racketY = 0;
+			pd->sprite->getPosition(info->other, NULL, &racketY);
+			float racketMiddle = racketY + RACKET_HEIGHT / 2;
+			
+			int newDeltaY = round(info->touch.y - racketMiddle);
+			ballActor_setDeltaY(ball, newDeltaY);
+			ballActor_collideX(ball);
 		}
 	}
 }
