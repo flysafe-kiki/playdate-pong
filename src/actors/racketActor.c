@@ -9,15 +9,8 @@ static void draw(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
 
 // Bit dirty, feels like this shouldn't be handled by the racket itself
 static void playerControlledUpdate(LCDSprite* racket) {
-    float crankChange = pd->system->getCrankChange();
-    int dy = 0;
+    int dy = round(pd->system->getCrankChange() / 3);
     
-    if (crankChange > 0) {
-        dy = 5;
-    } else if (crankChange < 0) {
-        dy = -5;
-    }
-
 	float actualX = 0;
 	float actualY = 0;
 	pd->sprite->getPosition(racket, &actualX, &actualY);
@@ -51,4 +44,3 @@ LCDSprite* racketActor_create(bool isPlayerControlled, int posX) {
 
     return racket;
 }
-void racketActor_move(LCDSprite*, int);
