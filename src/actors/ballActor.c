@@ -28,7 +28,7 @@ static void update(LCDSprite* ball) {
 
 static SpriteCollisionResponseType planeCollisionResponse(LCDSprite* ball, LCDSprite* other)
 {
-	return kCollisionTypeFreeze;
+	return kCollisionTypeSlide;
 }
 
 LCDSprite* ballActor_create() {
