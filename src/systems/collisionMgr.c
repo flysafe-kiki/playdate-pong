@@ -30,7 +30,8 @@ static void handleBallActorCollision(LCDSprite* ball, SpriteCollisionInfo* colli
 			pd->sprite->getPosition(info->other, NULL, &racketY);
 			float racketMiddle = racketY + RACKET_HEIGHT / 2;
 			
-			int newDeltaY = round(info->touch.y - racketMiddle);
+			int DELTA_DIVIDER = 2;
+			int newDeltaY = round(info->touch.y - racketMiddle) / DELTA_DIVIDER;
 			ballActor_setDeltaY(ball, newDeltaY);
 			ballActor_collideX(ball);
 		}
