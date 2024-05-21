@@ -17,6 +17,7 @@
 #include "ui/ui.h"
 
 PlaydateAPI* pd = NULL;
+LCDSprite* ball = NULL;
 LCDFont* font = NULL;
 
 #include "sprites.h"
@@ -84,10 +85,10 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 
 		// Add various sprites to the scene
 		setScore(0,0);
-		ballActor_create();
+		ball = ballActor_create();
 		int racketOffset = 50;
-		racketActor_create(true, racketOffset);
-		racketActor_create(false, pd->display->getWidth() - racketOffset - RACKET_WIDTH);
+		racketActor_create(racketOffset, racketActor_playerControlledUpdate);
+		racketActor_create(pd->display->getWidth() - racketOffset - RACKET_WIDTH, racketActor_aiControlledUpdate);
 		createGameBoundaries();
 
 		// Note: If you set an update callback in the kEventInit handler, the system assumes the game is pure C and doesn't run any Lua code in the game

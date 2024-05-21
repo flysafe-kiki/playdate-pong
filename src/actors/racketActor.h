@@ -8,6 +8,7 @@
 
 #include "pd_api.h"
 
-LCDSprite* racketActor_create(bool, int);
-void racketActor_move(LCDSprite*, int);
+LCDSprite* racketActor_create(int, LCDSpriteUpdateFunction*);
+void racketActor_playerControlledUpdate(LCDSprite*);
+void racketActor_aiControlledUpdate(LCDSprite*);
 #endif /* racketActor_h */
