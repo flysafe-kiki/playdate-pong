@@ -3,6 +3,6 @@
 
 #include "pd_api.h"
 
-void updateScores(int, int);
-void createNet(void);
+void ui_updateScores(int, int);
+void ui_createNet(void);
 #endif /* ui_h */

@@ -9,6 +9,7 @@
 #include "pd_api.h"
 
 LCDSprite* ballActor_create(void);
+void ballActor_destroy(void);
 void ballActor_reset(LCDSprite*, bool);
 void ballActor_collideX(LCDSprite*);
 void ballActor_collideY(LCDSprite*);

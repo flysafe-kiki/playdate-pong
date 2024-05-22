@@ -60,6 +60,7 @@ LCDSprite* ballActor_create() {
 }
 void ballActor_destroy() {
 	pd->sound->fileplayer->freePlayer(hitSound);
+	pd->sound->fileplayer->freePlayer(scoreSound);
 }
 void ballActor_collideX(LCDSprite* ball) {
 	dx = -1 * dx;
