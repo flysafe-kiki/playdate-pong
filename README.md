@@ -1,5 +1,6 @@
 # TODO Game Features
 - [ ] Implement a menu system
+    - TODO ability to select and hit a button to start the game
 - [ ] Review ball colliding code organization and make sure play is only called once on ballSound for a single collision
 - [ ] Add FX Sprites
 - [ ] Game Over system

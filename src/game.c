@@ -6,21 +6,8 @@
 #include "sprites.h"
 
 LCDSprite* ball = NULL;
+
 extern PlaydateAPI* pd;
-
-static int update(void* userdata) {
-	pd->graphics->clear(kColorWhite);
-	
-
-	pd->sprite->updateAndDrawSprites();
-	ui_updateScores(p1Score, p2Score);
-	
-	// pd->system->drawFPS(0,0);
-	
-	ui_createNet();
-	return 1;
-}
-
 
 static void createBoundary(float x, float y, float width, float height) {
 	LCDSprite *wall = pd->sprite->newSprite();
@@ -52,9 +39,18 @@ void game_init() {
     racketActor_create(racketOffset, racketActor_playerControlledUpdate);
     racketActor_create(pd->display->getWidth() - racketOffset - RACKET_WIDTH, racketActor_aiControlledUpdate);
     createGameBoundaries();
-
-    // Note: If you set an update callback in the kEventInit handler, the system assumes the game is pure C and doesn't run any Lua code in the game
-    pd->system->setUpdateCallback(update, pd);
+}
+ 
+int game_update() {
+	pd->graphics->clear(kColorWhite);
+	
+	pd->sprite->updateAndDrawSprites();
+	ui_updateScores(p1Score, p2Score);
+	
+	// pd->system->drawFPS(0,0);
+	
+	ui_createNet();
+	return 1;
 }
 
 void game_destroy() {
