@@ -93,6 +93,8 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 
 		// Note: If you set an update callback in the kEventInit handler, the system assumes the game is pure C and doesn't run any Lua code in the game
 		pd->system->setUpdateCallback(update, pd);
+	} else if ( event == kEventTerminate) {
+		ballActor_destroy();
 	}
 	
 	return 0;

@@ -1,7 +1,7 @@
 # TODO Game Features
-- [ ] Add audio
+- [ ] Implement a menu system
+- [ ] Review ball colliding code organization and make sure play is only called once on ballSound for a single collision
 - [ ] Add FX Sprites
-- [ ] Implement a menu / state machine
 - [ ] Game Over system
 - [ ] "slicing" logic = bigger racket delta when hitting the ball means more speed and / or curving the ball
 

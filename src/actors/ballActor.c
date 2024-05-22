@@ -7,6 +7,8 @@ extern PlaydateAPI* pd;
 int MAX_PIXEL_MOVEMENT = 10;
 int dx = 5;
 int dy = 5;
+FilePlayer* hitSound = NULL;
+FilePlayer* scoreSound = NULL;
 
 
 static void draw(LCDSprite* sprite, PDRect bounds, PDRect drawRect) {
@@ -47,16 +49,29 @@ LCDSprite* ballActor_create() {
 
 	pd->sprite->addSprite(ball);
 
+	hitSound = pd->sound->fileplayer->newPlayer();
+	int hitSoundLoaded = pd->sound->fileplayer->loadIntoPlayer(hitSound, "ball_hit");
+	pd->system->logToConsole(hitSoundLoaded == 1 ? "Successfully load ball_hit" : "Couldn't find ball_hit");
+	scoreSound = pd->sound->fileplayer->newPlayer();
+	int scoreSoundLoaded = pd->sound->fileplayer->loadIntoPlayer(scoreSound, "score");
+	pd->system->logToConsole(scoreSoundLoaded == 1 ? "Successfully load score" : "Couldn't find score");
+
 	return ball;
+}
+void ballActor_destroy() {
+	pd->sound->fileplayer->freePlayer(hitSound);
 }
 void ballActor_collideX(LCDSprite* ball) {
 	dx = -1 * dx;
+	pd->sound->fileplayer->play(hitSound, 1);
 }
 void ballActor_collideY(LCDSprite* ball) {
 	dy = -1 * dy;
+	pd->sound->fileplayer->play(hitSound, 1);
 }
 void ballActor_setDeltaY(LCDSprite* ball, int newDeltaY) {
 	dy = newDeltaY;
+	pd->sound->fileplayer->play(hitSound, 1);
 }
 void ballActor_reset(LCDSprite* ball, bool resetToTheRight) {
 	int resetDirection = resetToTheRight ? -1 : 1;
@@ -68,4 +83,5 @@ void ballActor_reset(LCDSprite* ball, bool resetToTheRight) {
 		posX = pd->display->getWidth() - BALL_SPAWN_X_OFFSET - BALL_WIDTH;
 	}
 	pd->sprite->moveTo(ball, posX, pd->display->getHeight() / 2 - BALL_HEIGHT);
+	pd->sound->fileplayer->play(scoreSound, 1);
 }
